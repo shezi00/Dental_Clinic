@@ -1,5 +1,5 @@
 import pool from '../config/db.js';
-
+import { sendEmail } from '../config/mailer.js';
 // Public: Submit Appointment Request
 export const createAppointmentRequest = async (req, res) => {
   const client = await pool.connect();
@@ -93,8 +93,14 @@ export const getAllAppointments = async (req, res) => {
         ar.status, 
         ar.created_at,
         u.full_name AS assigned_doctor,
-        COALESCE(ARRAY_AGG(DISTINCT pd.day_name), '{}') AS preferred_days,
-        COALESCE(ARRAY_AGG(DISTINCT pt.time_slot), '{}') AS preferred_times
+        COALESCE(
+          json_agg(DISTINCT pd.day_name) FILTER (WHERE pd.day_name IS NOT NULL), 
+          '[]'::json
+        ) AS preferred_days,
+        COALESCE(
+          json_agg(DISTINCT pt.time_slot) FILTER (WHERE pt.time_slot IS NOT NULL), 
+          '[]'::json
+        ) AS preferred_times
       FROM appointment_requests ar
       JOIN patients p ON ar.patient_id = p.id
       LEFT JOIN users u ON ar.assigned_doctor_id = u.id
@@ -108,5 +114,76 @@ export const getAllAppointments = async (req, res) => {
   } catch (err) {
     console.error('Fetch Appointments Error:', err);
     return res.status(500).json({ error: 'Failed to retrieve appointments.' });
+  }
+};
+
+// Protected: Update Appointment Status
+export const updateAppointmentStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const validStatuses = ['PENDING', 'CONFIRMED', 'CANCELLED', 'COMPLETED'];
+  if (!status || !validStatuses.includes(status.toUpperCase())) {
+    return res.status(400).json({ error: 'Invalid or missing status value.' });
+  }
+
+  const uppercaseStatus = status.toUpperCase();
+
+  try {
+    // 1. Update status & fetch patient details for email
+    const result = await pool.query(
+      `UPDATE appointment_requests ar
+       SET status = $1 
+       FROM patients p
+       WHERE ar.patient_id = p.id AND ar.id = $2
+       RETURNING ar.id, ar.status, ar.reason_for_visit, p.full_name AS patient_name, p.email AS patient_email`,
+      [uppercaseStatus, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Appointment request not found.' });
+    }
+
+    const appt = result.rows[0];
+
+    // 2. Trigger automated email if status changed to CONFIRMED
+    if (uppercaseStatus === 'CONFIRMED' && appt.patient_email) {
+      const emailContent = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; rounded: 12px;">
+          <h2 style="color: #0891b2; margin-bottom: 8px;">Harbord Dentistry</h2>
+          <hr style="border: 0; border-top: 1px solid #e2e8f0; margin-bottom: 20px;" />
+          
+          <p>Dear <strong>${appt.patient_name}</strong>,</p>
+          <p>Great news! Your appointment request at Harbord Dentistry has been <strong>CONFIRMED</strong>.</p>
+          
+          <div style="background-color: #f8fafc; padding: 16px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #0891b2;">
+            <p style="margin: 0; font-size: 14px; color: #475569;"><strong>Reason for Visit:</strong> ${appt.reason_for_visit}</p>
+            <p style="margin: 8px 0 0 0; font-size: 14px; color: #475569;"><strong>Status:</strong> Confirmed</p>
+          </div>
+
+          <p>If you need to reschedule or have any questions prior to your visit, please feel free to call our office directly.</p>
+          
+          <p style="margin-top: 30px; font-size: 12px; color: #94a3b8;">
+            Best regards,<br/>
+            <strong>Harbord Dentistry Team</strong>
+          </p>
+        </div>
+      `;
+
+      // Send asynchronously without blocking HTTP response
+      sendEmail({
+        to: appt.patient_email,
+        subject: 'Appointment Confirmed - Harbord Dentistry',
+        html: emailContent,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Status updated successfully.',
+      appointment: appt,
+    });
+  } catch (err) {
+    console.error('Update Appointment Status Error:', err);
+    return res.status(500).json({ error: 'Failed to update appointment status.' });
   }
 };

@@ -1,5 +1,9 @@
 import express from 'express';
-import { createAppointmentRequest, getAllAppointments } from '../controllers/appointmentController.js';
+import { 
+  createAppointmentRequest, 
+  getAllAppointments, 
+  updateAppointmentStatus 
+} from '../controllers/appointmentController.js';
 import { authenticateToken, authorizeRoles } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -7,7 +11,8 @@ const router = express.Router();
 // Public route for frontend booking form
 router.post('/book', createAppointmentRequest);
 
-// Protected dashboard route (Admin, Doctor, Staff)
+// Protected dashboard routes (Admin, Doctor, Staff)
 router.get('/', authenticateToken, authorizeRoles('ADMIN', 'DOCTOR', 'STAFF'), getAllAppointments);
+router.put('/:id/status', authenticateToken, authorizeRoles('ADMIN', 'DOCTOR', 'STAFF'), updateAppointmentStatus);
 
 export default router;
