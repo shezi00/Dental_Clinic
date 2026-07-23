@@ -61,13 +61,13 @@ export default function Hero() {
             {/* CTA Buttons */}
             <div className="btn-row flex gap-4 mt-8 flex-wrap items-center">
               <Link
-                href="#contact"
+                href="/book"
                 className="px-8 py-3.5 rounded-full text-sm font-bold tracking-wide bg-[#FF6B4A] text-[#FAF7F2] border border-[#FF6B4A] hover:bg-[#15413B] hover:border-[#15413B] hover:-translate-y-1 hover:shadow-lg hover:shadow-[#FF6B4A]/20 active:translate-y-0 transition-all duration-300"
               >
                 Book a Visit
               </Link>
               <Link
-                href="#philosophy"
+                href="/services"
                 className="px-8 py-3.5 rounded-full text-sm font-bold tracking-wide border border-[rgba(250,247,242,0.3)] text-[#FAF7F2] hover:bg-[#FAF7F2] hover:text-[#0F2E2A] hover:-translate-y-1 hover:shadow-lg hover:shadow-white/10 active:translate-y-0 transition-all duration-300"
               >
                 Our Services
