@@ -1,4 +1,5 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const AI_API_URL = process.env.NEXT_PUBLIC_AI_API_URL || 'http://localhost:8000';
 
 /**
  * Helper for fetch with abort timeout safety
@@ -17,7 +18,7 @@ const fetchWithTimeout = async (url, options = {}, timeout = 8000) => {
   } catch (err) {
     clearTimeout(id);
     if (err.name === 'AbortError') {
-      throw new Error('Server request timed out. Please check if your Express backend is running on port 5000.');
+      throw new Error('Server request timed out. Please check if your backend is running.');
     }
     throw err;
   }
@@ -205,12 +206,29 @@ export const getDashboardStats = async () => {
 
   return data;
 };
+
 /**
- * Upload a PDF to the AI Chatbot Knowledge Base (FastAPI Backend)
+ * Upload a Knowledge Base PDF (Protected AI Microservice Endpoint)
  */
-/**
- * Upload a PDF to the AI Chatbot Knowledge Base (FastAPI Backend)
- */
-/**
- * Upload a PDF to the AI Chatbot Knowledge Base (FastAPI Backend)
- */
+export const uploadKnowledgeBase = async (file) => {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const response = await fetchWithTimeout(`${AI_API_URL}/api/admin/upload-knowledge`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token || ''}`,
+    },
+    body: formData,
+  }, 30000); // Extended timeout to 30 seconds for large vector file re-indexing processing
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.detail || 'Failed to upload and re-index knowledge base.');
+  }
+
+  return data;
+};

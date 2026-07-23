@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import AdminLayout from '@/components/AdminLayout';
+import { uploadKnowledgeBase } from '@/services/api';
 
 export default function KnowledgeBasePage() {
   const [file, setFile] = useState<File | null>(null);
@@ -15,23 +16,13 @@ export default function KnowledgeBasePage() {
     setUploading(true);
     setMessage('');
 
-    const formData = new FormData();
-    formData.append('file', file);
-
     try {
-      const res = await fetch('http://localhost:8000/api/admin/upload-knowledge', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        setMessage('✅ Knowledge base updated and re-indexed successfully!');
-      } else {
-        setMessage(`❌ Error: ${data.detail || 'Upload failed'}`);
-      }
-    } catch {
-      setMessage('❌ Network error connecting to backend server.');
+      await uploadKnowledgeBase(file);
+      setMessage('✅ Knowledge base updated and re-indexed successfully!');
+      setFile(null); // Reset file input selection after success
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Network error connecting to backend server.';
+      setMessage(`❌ Error: ${msg}`);
     } finally {
       setUploading(false);
     }
@@ -43,7 +34,7 @@ export default function KnowledgeBasePage() {
         <div className="w-full max-w-xl bg-white p-8 rounded-2xl shadow-md border border-[#0F2E2A]/10">
           <div className="text-center mb-6">
             <h1 className="text-xl font-extrabold text-[#0F2E2A] mb-2">
-               AI Knowledge Base Management
+              AI Knowledge Base Management
             </h1>
             <p className="text-xs text-[#0F2E2A]/70 leading-relaxed">
               Upload a replacement PDF containing updated clinic guidelines, pricing, or operating hours. The backend will automatically replace the old document and re-index the vector database instantly.

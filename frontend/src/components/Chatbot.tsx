@@ -18,7 +18,7 @@ export default function Chatbot() {
   const [input, setInput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [showOptions, setShowOptions] = useState<boolean>(true);
-
+  const aiBackendUrl = process.env.NEXT_PUBLIC_AI_BACKEND_URL || 'http://127.0.0.1:8000';
   // =========================================================================
   // STATE KEYS TO KEEP BOOKING FLOW IN PURE PYTHON (BYPASSES GEMINI)
   // =========================================================================
@@ -46,7 +46,7 @@ export default function Chatbot() {
 
     try {
       // PROPERLY PASS booking_step AND booking_data BACK TO FASTAPI
-      const response = await fetch('http://127.0.0.1:8000/api/chat', {
+      const response = await fetch(`${aiBackendUrl}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
