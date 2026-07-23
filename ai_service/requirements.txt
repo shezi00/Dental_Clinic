@@ -29,8 +29,8 @@ google-api-core==2.30.3
 google-api-python-client==2.198.0
 google-auth==2.50.0
 google-auth-httplib2==0.3.1
-google-genai==1.47.0
-google-generativeai==0.8.6
+google-genai
+google-generativeai
 googleapis-common-protos==1.75.0
 grpcio==1.80.0
 grpcio-status==1.71.2
@@ -56,7 +56,7 @@ langchain==0.3.30
 langchain-chroma==0.2.6
 langchain-community==0.3.31
 langchain-core==0.3.86
-langchain-google-genai==2.1.12
+langchain-google-genai
 langchain-openai==0.3.35
 langchain-text-splitters==0.3.11
 langsmith==0.4.37
