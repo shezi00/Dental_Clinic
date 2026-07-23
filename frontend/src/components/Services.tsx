@@ -178,7 +178,7 @@ export default function Services() {
               className="service-img overflow-hidden rounded-3xl border border-[rgba(15,46,42,0.12)] shadow-xl h-[360px] cursor-pointer"
             >
               <img
-                src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=800&q=80"
+                src="https://images.unsplash.com/photo-1663755489920-5e09f66d011a?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Preventative Dental Care"
                 className="w-full h-full object-cover transition-transform duration-500"
               />
@@ -218,7 +218,7 @@ export default function Services() {
               className="service-img order-1 lg:order-2 overflow-hidden rounded-3xl border border-[rgba(15,46,42,0.12)] shadow-xl h-[360px] cursor-pointer"
             >
               <img
-                src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=800&q=80"
+                src="https://images.unsplash.com/photo-1684607633251-8a4a8d94ddd2?q=80&w=2662&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Periodontics and Gum Therapy"
                 className="w-full h-full object-cover transition-transform duration-500"
               />
@@ -233,7 +233,7 @@ export default function Services() {
               className="service-img overflow-hidden rounded-3xl border border-[rgba(15,46,42,0.12)] shadow-xl h-[360px] cursor-pointer"
             >
               <img
-                src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800&q=80"
+                src="https://plus.unsplash.com/premium_photo-1661436629100-ba3c5ea70514?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Restorative Care"
                 className="w-full h-full object-cover transition-transform duration-500"
               />
@@ -291,7 +291,7 @@ export default function Services() {
               className="service-img order-1 lg:order-2 overflow-hidden rounded-3xl border border-[rgba(15,46,42,0.12)] shadow-xl h-[360px] cursor-pointer"
             >
               <img
-                src="https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&w=800&q=80"
+                src="https://images.unsplash.com/photo-1667133295315-820bb6481730?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Cosmetic Dentistry"
                 className="w-full h-full object-cover transition-transform duration-500"
               />
@@ -350,7 +350,7 @@ export default function Services() {
               className="service-img overflow-hidden rounded-3xl border border-[rgba(15,46,42,0.12)] shadow-xl h-[360px] cursor-pointer"
             >
               <img
-                src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=800&q=80"
+                src="https://plus.unsplash.com/premium_photo-1672759455710-70c879daf721?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Emergency Care"
                 className="w-full h-full object-cover transition-transform duration-500"
               />

@@ -205,3 +205,12 @@ export const getDashboardStats = async () => {
 
   return data;
 };
+/**
+ * Upload a PDF to the AI Chatbot Knowledge Base (FastAPI Backend)
+ */
+/**
+ * Upload a PDF to the AI Chatbot Knowledge Base (FastAPI Backend)
+ */
+/**
+ * Upload a PDF to the AI Chatbot Knowledge Base (FastAPI Backend)
+ */

@@ -14,8 +14,8 @@ export const getDashboardStats = async (req, res) => {
       // Pending appointments needing action
       pool.query("SELECT COUNT(*)::int FROM appointment_requests WHERE status = 'PENDING'"),
       
-      // Emergency requests where is_in_pain = TRUE and not cancelled
-      pool.query("SELECT COUNT(*)::int FROM appointment_requests WHERE is_in_pain = TRUE AND status != 'CANCELLED'"),
+      // Emergency requests: is_in_pain = TRUE and strictly active (exclude CANCELLED and COMPLETED)
+      pool.query("SELECT COUNT(*)::int FROM appointment_requests WHERE is_in_pain = TRUE AND status NOT IN ('CANCELLED', 'COMPLETED')"),
       
       // Unread/Pending inquiries
       pool.query("SELECT COUNT(*)::int FROM contact_inquiries WHERE status IN ('NEW', 'IN_PROGRESS')"),

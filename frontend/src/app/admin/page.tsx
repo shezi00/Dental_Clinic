@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import AdminLayout from '../../components/AdminLayout';
+import AdminLayout from '@/components/AdminLayout';
 import { getDashboardStats } from '../../services/api';
 
 interface DashboardData {
